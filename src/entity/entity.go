@@ -1,6 +1,11 @@
 package entity
 
-type PixelArray [][]int
+type Pixel struct {
+	Value string
+	Color string
+}
 
-const RECURSIVE = "recursive"
-const LOOP = "loop"
+type PixelArray [][]Pixel
+
+const ELLIPSE = "ellipse"
+const RECTANGLE = "rectangle"

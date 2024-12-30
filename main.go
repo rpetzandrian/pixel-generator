@@ -5,32 +5,70 @@ import (
 	"os"
 	"pixel-generator/src/core"
 	"pixel-generator/src/entity"
-	"pixel-generator/src/helpers"
 	"strconv"
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("Usage: go run . <size> <recursive/loop>")
+	args := os.Args
+
+	if len(args) != 5 {
+		fmt.Println("[+] COLORS [+]")
+		fmt.Println("[1]. GRAY")
+		fmt.Println("[2]. RED")
+		fmt.Println("[3]. GREEN")
+		fmt.Println("[4]. BLUE")
+		fmt.Println("[5]. WHITE")
+		fmt.Println("Usage: go run . <width> <height> <color> <ellipse/rectangle>")
 		return
 	}
 
-	size, err := strconv.Atoi(os.Args[1])
+	widthStr := args[1]
+	heightStr := args[2]
+
+	// Convert width and height to integers
+	width, err := strconv.Atoi(widthStr)
 	if err != nil {
-		fmt.Println("Error: Invalid size argument. Please provide a valid integer.")
+		fmt.Printf("Invalid width: %s", widthStr)
 		return
 	}
 
-	if os.Args[2] != entity.RECURSIVE && os.Args[2] != entity.LOOP {
-		fmt.Println("Error: Invalid mode argument. Please provide a valid mode (recursive/loop).")
+	height, err := strconv.Atoi(heightStr)
+	if err != nil {
+		fmt.Printf("Invalid height: %s", heightStr)
 		return
 	}
 
-	arr := helpers.GeneratePixelArray(size)
+	if os.Args[3] != "GRAY" && os.Args[3] != "RED" && os.Args[3] != "GREEN" && os.Args[3] != "BLUE" && os.Args[3] != "WHITE" {
+		fmt.Println("Error: Invalid color")
+		return
+	}
 
-	if os.Args[2] == entity.RECURSIVE {
-		core.PixelGeneratorRecursive(arr, 0, 0)
-	} else {
-		core.PixelGenerator(arr)
+	if os.Args[4] != entity.ELLIPSE && os.Args[4] != entity.RECTANGLE {
+		fmt.Println("Error: Invalid mode argument. Please provide a valid mode (<ellipse/rectangle>).")
+		return
+	}
+
+	if os.Args[4] == entity.ELLIPSE {
+		data := make(entity.PixelArray, width+10)
+		for i := range data {
+			data[i] = make([]entity.Pixel, height)
+		}
+		x := 5
+		y := 5
+		if width > 10 {
+			x = width / 2
+		}
+		if height > 10 {
+			y = height / 2
+		}
+		core.DrawEllipse(&data, x, y, width, height, os.Args[3])
+		core.PixelGenerator(data)
+	} else if os.Args[4] == entity.RECTANGLE {
+		data := make(entity.PixelArray, width+10)
+		for i := range data {
+			data[i] = make([]entity.Pixel, height+10)
+		}
+		core.DrawRectangle(&data, 0, 0, width, height, os.Args[3])
+		core.PixelGenerator(data)
 	}
 }
