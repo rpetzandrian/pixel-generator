@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"pixel-generator/src/entity"
+	"time"
 )
 
 func PixelGenerator(data entity.PixelArray) error {
@@ -28,6 +29,7 @@ func PixelGenerator(data entity.PixelArray) error {
 }
 
 func DrawEllipse(data *entity.PixelArray, centerX, centerY, width, height int, color string) {
+	start := time.Now()
 	a := width / 2
 	b := height / 2
 
@@ -40,6 +42,10 @@ func DrawEllipse(data *entity.PixelArray, centerX, centerY, width, height int, c
 			}
 		}
 	}
+	elapsed := time.Since(start)
+	fmt.Println()
+	fmt.Printf("DrawEllipse's Time Elapsed %s", elapsed)
+	fmt.Println()
 }
 
 // Function to draw a rectangle
@@ -64,6 +70,8 @@ func DrawRectangle(data *entity.PixelArray, startX, startY, width, height int, c
 
 // Function to draw a line
 func drawLine(data *entity.PixelArray, x1, y1, x2, y2 int, color string) {
+	start := time.Now()
+
 	dx := abs(x2 - x1)
 	dy := abs(y2 - y1)
 	sx := -1
@@ -95,6 +103,10 @@ func drawLine(data *entity.PixelArray, x1, y1, x2, y2 int, color string) {
 			y1 += sy
 		}
 	}
+	elapsed := time.Since(start)
+	fmt.Println()
+	fmt.Printf("drawLine's Time Elapsed took %s", elapsed)
+	fmt.Println()
 }
 
 func withinBounds(data *entity.PixelArray, x, y int) bool {
