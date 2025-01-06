@@ -3,28 +3,17 @@ package core
 import (
 	"fmt"
 	"pixel-generator/src/entity"
-	"time"
 )
 
+var pixelChars = []string{" ", "░", "▒", "▓"}
+
 func PixelGenerator(data entity.PixelArray) error {
-	start := time.Now()
 	for i := 0; i < len(data); i++ {
 		for j := 0; j < len(data[i]); j++ {
-			switch data[i][j] {
-			case 0:
-				fmt.Print(" ")
-			case 1:
-				fmt.Print("░")
-			case 2:
-				fmt.Print("▒")
-			case 3:
-				fmt.Print("▓")
-			}
+			print(pixelChars[data[i][j]])
 		}
 		fmt.Println()
 	}
-	elapsed := time.Since(start)
-	fmt.Println("Elapsed", elapsed)
 
 	return nil
 }
@@ -41,16 +30,7 @@ func PixelGeneratorRecursive(data entity.PixelArray, i, j int) {
 		return
 	}
 
-	switch data[i][j] {
-	case 0:
-		fmt.Print(" ")
-	case 1:
-		fmt.Print("░")
-	case 2:
-		fmt.Print("▒")
-	case 3:
-		fmt.Print("▓")
-	}
+	print(pixelChars[data[i][j]])
 
 	PixelGeneratorRecursive(data, i, j+1)
 }

@@ -1,2 +1,2 @@
 run :
-	go run . $(size) $(type)
+	go run . $(s) $(t)
