@@ -7,6 +7,7 @@ import (
 	"pixel-generator/src/entity"
 	"pixel-generator/src/helpers"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -29,7 +30,10 @@ func main() {
 	arr := helpers.GeneratePixelArray(size)
 
 	if os.Args[2] == entity.RECURSIVE {
+		start := time.Now()
 		core.PixelGeneratorRecursive(arr, 0, 0)
+		elapsed := time.Since(start)
+		fmt.Println("Elapsed", elapsed)
 	} else {
 		core.PixelGenerator(arr)
 	}

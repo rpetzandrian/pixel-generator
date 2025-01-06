@@ -3,9 +3,11 @@ package core
 import (
 	"fmt"
 	"pixel-generator/src/entity"
+	"time"
 )
 
 func PixelGenerator(data entity.PixelArray) error {
+	start := time.Now()
 	for i := 0; i < len(data); i++ {
 		for j := 0; j < len(data[i]); j++ {
 			switch data[i][j] {
@@ -21,6 +23,8 @@ func PixelGenerator(data entity.PixelArray) error {
 		}
 		fmt.Println()
 	}
+	elapsed := time.Since(start)
+	fmt.Println("Elapsed", elapsed)
 
 	return nil
 }
