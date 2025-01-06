@@ -23,15 +23,13 @@ func main() {
 		return
 	}
 
-	if os.Args[2] != entity.RECURSIVE && os.Args[2] != entity.LOOP {
+	mode := os.Args[2]
+	if mode != entity.RECURSIVE && mode != entity.LOOP {
 		fmt.Println("Error: Invalid mode argument. Please provide a valid mode (recursive/loop).")
 		return
 	}
 
-	// Path to the existing CSV file
 	csvFilePath := "result.csv"
-
-	// Open the existing CSV file in append mode
 	file, err := os.OpenFile(csvFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -39,31 +37,20 @@ func main() {
 	}
 	defer file.Close()
 
-	// Create a CSV writer
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
 	arr := helpers.GeneratePixelArray(size)
 
-	var data []string
-	if os.Args[2] == entity.RECURSIVE {
-		start := time.Now()
+	start := time.Now()
+	if mode == entity.RECURSIVE {
 		core.PixelGeneratorRecursive(arr, 0, 0)
-		elapsed := time.Since(start)
-
-		// Prepare the data to write
-		data = append(data, strconv.Itoa(size), "recursive", elapsed.String())
-
 	} else {
-		start := time.Now()
 		core.PixelGenerator(arr)
-		elapsed := time.Since(start)
-
-		// Prepare the data to write
-		data = append(data, strconv.Itoa(size), "looping", elapsed.String())
 	}
+	elapsed := time.Since(start)
 
-	// Write the new row to the existing CSV file
+	data := []string{strconv.Itoa(size), mode, elapsed.String()}
 	if err := writer.Write(data); err != nil {
 		fmt.Println("Error writing CSV:", err)
 		return

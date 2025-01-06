@@ -11,10 +11,11 @@ func GeneratePixelArray(size int) entity.PixelArray {
 	pixels := make(entity.PixelArray, size)
 
 	for i := 0; i < size; i++ {
-		pixels[i] = make([]int, size)
+		row := make([]int, size)
 		for j := 0; j < size; j++ {
-			pixels[i][j] = r.Intn(4)
+			row[j] = r.Intn(4)
 		}
+		pixels[i] = row
 	}
 
 	return pixels

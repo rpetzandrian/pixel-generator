@@ -8,9 +8,11 @@ import (
 var pixelChars = []string{" ", "░", "▒", "▓"}
 
 func PixelGenerator(data entity.PixelArray) error {
-	for i := 0; i < len(data); i++ {
-		for j := 0; j < len(data[i]); j++ {
-			print(pixelChars[data[i][j]])
+	size := len(data)
+	for i := 0; i < size; i++ {
+		row := data[i]
+		for j := 0; j < size; j++ {
+			print(pixelChars[row[j]])
 		}
 		fmt.Println()
 	}
@@ -20,11 +22,12 @@ func PixelGenerator(data entity.PixelArray) error {
 
 // PixelGeneratorRecursive
 func PixelGeneratorRecursive(data entity.PixelArray, i, j int) {
-	if i == len(data) {
+	size := len(data)
+	if i == size {
 		return
 	}
 
-	if j == len(data[i]) {
+	if j == size {
 		fmt.Println()
 		PixelGeneratorRecursive(data, i+1, 0)
 		return
