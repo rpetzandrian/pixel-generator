@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"fmt"
 	"pixel-generator/src/entity"
 )
@@ -8,32 +9,31 @@ import (
 var pixelChars = []string{" ", "░", "▒", "▓"}
 
 func PixelGenerator(data entity.PixelArray) error {
+	var buffer bytes.Buffer
 	size := len(data)
 	for i := 0; i < size; i++ {
 		row := data[i]
 		for j := 0; j < size; j++ {
-			print(pixelChars[row[j]])
+			buffer.WriteString(pixelChars[row[j]])
 		}
-		fmt.Println()
+		buffer.WriteString("\n")
 	}
-
+	fmt.Print(buffer.String())
 	return nil
 }
 
 // PixelGeneratorRecursive
 func PixelGeneratorRecursive(data entity.PixelArray, i, j int) {
-	size := len(data)
-	if i == size {
+	if i == len(data) {
 		return
 	}
 
-	if j == size {
+	if j == len(data[i]) {
 		fmt.Println()
 		PixelGeneratorRecursive(data, i+1, 0)
 		return
 	}
 
-	print(pixelChars[data[i][j]])
-
+	fmt.Print(pixelChars[data[i][j]])
 	PixelGeneratorRecursive(data, i, j+1)
 }
